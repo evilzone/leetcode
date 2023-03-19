@@ -1,0 +1,60 @@
+/*
+Given an array of integers nums, sort the array in ascending order and return it.
+You must solve the problem without using any built-in functions in O(nlog(n)) time complexity and with the smallest space complexity possible.
+*/
+
+class Solution {
+
+    private void merge(int[] nums, int lo, int hi, int mid) {
+        int i = lo;
+        int j = mid + 1;
+        int k = 0;
+        int n1 = mid - lo + 1;
+        int n2 = hi - mid;
+
+        int[] left = new int[n1];
+        int[] right = new int[n2];
+
+        for(int x = lo; x <= mid; x++) {
+            left[k++] = nums[x]; 
+        }
+        k = 0;
+        for(int x = mid + 1; x <= hi; x++) {
+            right[k++] = nums[x];
+        }
+
+        i = 0;
+        j = 0;
+        k = lo;
+
+        while(i < n1 && j < n2) {
+            if(left[i] <= right[j]) {
+                nums[k++] = left[i++];
+            } else {
+                nums[k++] = right[j++];
+            } 
+        }
+
+        while(i < n1) {
+            nums[k++] = left[i++];
+        }
+
+        while(j < n2) {
+            nums[k++] = right[j++];
+        }
+    }
+
+    private void mergeSort(int[] nums, int lo, int hi) {
+        if(lo < hi) {
+            int mid = (lo + hi)/ 2;
+            mergeSort(nums, lo, mid);
+            mergeSort(nums, mid + 1, hi);
+            merge(nums, lo, hi, mid);
+        }
+    }
+
+    public int[] sortArray(int[] nums) {
+        mergeSort(nums, 0, nums.length - 1);
+        return nums;
+    }
+}
