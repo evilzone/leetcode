@@ -1,0 +1,66 @@
+class solution {
+
+    public static String nextPermutation(String num) {
+
+        int n = num.length();
+        int j = num.length() - 1; // last index
+
+        int[] number = new int[num.length()];
+
+        for(int i = 0; i < n; i++) {
+            number[i] = num.charAt(i) - '0';
+        }
+
+
+        // moving right to left
+        // find the point where we can generate the solution
+
+        int i = j - 1;
+
+        while(i >= 0) {
+            if(number[i] < number[i+1]) { // ascii code comp
+                break;
+            }
+            i--;
+        }
+
+        // largest permutation number
+        if(i == -1) {
+            return num;
+        }
+
+        int index = i + 1; // smallest number index which is largest than pivot ( index i)
+
+        // next digit greater than the pivot index
+        for(int k = i + 1; k < n; k++) {
+            if(number[i] < number[k] && (number[index] > number[k])) {
+                index = k;
+            }
+        }
+
+        // swap and sort
+
+        int temp = number[i];
+        number[i] = number[index];
+        number[index] = temp;
+
+        Arrays.sort(number, i+1, n);
+
+        StringBuilder result = new StringBuilder();
+
+        for(int k = 0; k < n; k++) {
+            result.append((char) (number[k] + '0'));
+        }
+        return result.toString();
+    }
+
+    public static void main(String[] args) {
+
+        String next = nextPermutation("48975");
+        next = nextPermutation("12345");
+        next = nextPermutation("54321");
+        System.out.println(next);
+
+    }
+
+}
